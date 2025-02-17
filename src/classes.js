@@ -1,12 +1,22 @@
 class Dashboard {
     static projects = [];
 
-    addProject(project) {
-        projects.push(project);
+    static addProject(project) {
+        this.projects.push(project);
     }
 
-    deleteProject(index) {
-        projects.splice(index, 1);
+    static deleteProject(index) {
+        this.projects.splice(index, 1);
+    }
+
+    static getProject(name) {
+        let result;
+        for (const project of this.projects) {
+            if (project.name === name) {
+                result = project;
+            }
+        }
+        return result;
     }
 }
 
@@ -31,6 +41,14 @@ class Project {
 
     set dueDate(date) {
         this._dueDate = date;
+    }
+
+    addTodoList(todoList) {
+        this.todoLists.push(todoList);
+    }
+
+    deleteTodoList(index) {
+        this.todoLists.splice(index, 1);
     }
 }
 

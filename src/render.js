@@ -1,4 +1,6 @@
-const createDashboard = () => {
+import { Dashboard } from "./classes";
+
+const createDashboardElements = () => {
     // create dashboard html
     const body = document.querySelector("body");
 
@@ -80,4 +82,44 @@ const createNewTodoListModal = () => {
 
 // TODO create function to render projects in the sidebar
 
-export { createDashboard }
+const createTodoListElement = (todoList) => {
+    // create a todo list
+    const todoListContainer = document.createElement("div");
+    todoListContainer.classList.add("todo-list");
+
+    const name = document.createElement("h2");
+    name.textContent = todoList.name;
+
+    const todos = document.createElement("ul");
+    for (const todoItem of todoList.todoList) {
+        const li = document.createElement("li");
+
+        const name = document.createElement("p");
+        name.textContent = todoItem.name;
+
+        const desc = document.createElement("p");
+        desc.textContent = todoItem.description;
+
+        li.append(name, desc);
+        todos.append(li);
+    }
+
+    todoListContainer.append(name, todoList);
+
+    return todoListContainer;
+}
+
+const renderAllTodoLists = () => {
+    const listsToRender = [];
+    const todoListsContainer = document.querySelector(".todo-lists-container");
+    todoListsContainer.replaceChildren();
+    for (const project of Dashboard.projects) {
+        for (const todoList of project.todoLists) {
+            const element = createTodoListElement(todoList);
+            listsToRender.push(element);
+        }
+    }
+    todoListsContainer.append(...listsToRender);
+}
+
+export { createDashboardElements, renderAllTodoLists }

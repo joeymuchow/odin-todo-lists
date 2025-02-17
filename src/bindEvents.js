@@ -1,3 +1,4 @@
+import { renderAllTodoLists } from "./render";
 import { TodoList } from "./todoList";
 
 const bindEvents = () => {
@@ -28,6 +29,7 @@ const createNewTodoList = (e) => {
         // create function that gets a project by its name, inside the dashboard class?
 
         // call a render all projects function?
+        renderAllTodoLists();
     } else {
         document.querySelector(".name-error").textContent = "This field is required"
     }

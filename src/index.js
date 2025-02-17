@@ -1,6 +1,9 @@
 import "./styles.css";
-import { createDashboard } from "./render";
+import { createDashboardElements } from "./render";
+import { Dashboard, Project } from "./classes";
 
 document.addEventListener("DOMContentLoaded", () => {
-    createDashboard();
+    const defaultProject = new Project("Default", "None");
+    Dashboard.addProject(defaultProject);
+    createDashboardElements();
 });
