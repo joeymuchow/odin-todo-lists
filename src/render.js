@@ -7,8 +7,11 @@ const createDashboard = () => {
     title.textContent = "Todo Projects";
     titleContainer.append(title);
 
+    // create sidebar nav that will show projects and view all todos
+
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add("buttons-container");
+    // create new project button to add a project to dashboard class
     const newTodoListBtn = document.createElement("button");
     newTodoListBtn.classList.add("new-todo-list");
     newTodoListBtn.textContent = "New todo list";
@@ -42,20 +45,6 @@ const createNewTodoListModal = () => {
     const todoListNameError = document.createElement("p");
     todoListNameError.classList.add("error", "name-error");
 
-    // Todo list due date input
-    const dueDate = document.createElement("div");
-    dueDate.classList.add("input-container");
-    const dueDateLabel = document.createElement("label");
-    dueDateLabel.textContent = "Due Date";
-    dueDateLabel.setAttribute("for", "due-date");
-    const dueDateInput = document.createElement("input");
-    dueDateInput.type = "date";
-    dueDateInput.id = "due-date";
-    dueDateInput.required = "true";
-    dueDate.append(dueDateLabel, dueDateInput);
-    const todoListDueDateError = document.createElement("p");
-    todoListDueDateError.classList.add("error", "date-error");
-
     // Todo list form create and cancel buttons
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add("buttons-container");
@@ -68,9 +57,27 @@ const createNewTodoListModal = () => {
     cancelBtn.textContent = "Cancel";
     buttonsContainer.append(submitBtn, cancelBtn);
 
-    form.append(title, todoListName, todoListNameError, dueDate, todoListDueDateError, buttonsContainer);
+    form.append(title, todoListName, todoListNameError, buttonsContainer);
     newTodoListModal.append(form);
     return newTodoListModal;
 }
+
+// TODO create new project modal
+// use this as part of it
+// Todo list due date input
+// const dueDate = document.createElement("div");
+// dueDate.classList.add("input-container");
+// const dueDateLabel = document.createElement("label");
+// dueDateLabel.textContent = "Due Date";
+// dueDateLabel.setAttribute("for", "due-date");
+// const dueDateInput = document.createElement("input");
+// dueDateInput.type = "date";
+// dueDateInput.id = "due-date";
+// dueDateInput.required = "true";
+// dueDate.append(dueDateLabel, dueDateInput);
+// const todoListDueDateError = document.createElement("p");
+// todoListDueDateError.classList.add("error", "date-error");
+
+// TODO create function to render projects in the sidebar
 
 export { createDashboard }
