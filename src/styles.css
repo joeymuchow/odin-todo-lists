@@ -1,0 +1,68 @@
+body {
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+}
+
+h1 {
+    text-align: center;
+}
+
+.buttons-container {
+    text-align: center;
+}
+
+.new-todo-list-modal {
+    bottom: 40%;
+}
+
+.new-todo-list-modal form > div.input-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    text-align: right;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.new-todo-list-modal button {
+    margin: 5px;
+}
+
+.create-todo-list {
+    background-color: green;
+    color: white;
+}
+
+.cancel-todo-list {
+    background-color: red;
+    color: white;
+}
+
+.todo-lists-container {
+    background-color: slategray;
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+}
+
+.todo-list {
+    background-color: aqua;
+    padding: 10px;
+}
+
+.todo-list h2 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.todo-list .due-date {
+    display: flex;
+}
+
+.todo-list .due-date p:first-child {
+    margin-right: 10px;
+}
