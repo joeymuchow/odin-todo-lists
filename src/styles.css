@@ -14,11 +14,13 @@ h1 {
     text-align: center;
 }
 
-.new-todo-list-modal {
+.new-todo-list-modal,
+.new-project-modal {
     bottom: 40%;
 }
 
-.new-todo-list-modal form > div.input-container {
+.new-todo-list-modal form > div.input-container,
+.new-project-modal > div.input-container {
     display: grid;
     grid-template-columns: 1fr 3fr;
     text-align: right;
@@ -26,16 +28,19 @@ h1 {
     margin-bottom: 10px;
 }
 
-.new-todo-list-modal button {
+.new-todo-list-modal button,
+.new-project-modal button {
     margin: 5px;
 }
 
-.create-todo-list {
+.create-todo-list,
+.create-project {
     background-color: green;
     color: white;
 }
 
-.cancel-todo-list {
+.cancel-todo-list,
+.cancel-project {
     background-color: red;
     color: white;
 }
