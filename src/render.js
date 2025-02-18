@@ -22,7 +22,7 @@ const createDashboardElements = () => {
     newTodoListBtn.classList.add("new-todo-list");
     newTodoListBtn.textContent = "New todo list";
     const newTodoListModal = createNewTodoListModal();
-    buttonsContainer.append(newTodoListBtn, newTodoListModal, newProjectBtn, newProjectModal);
+    buttonsContainer.append(newProjectBtn, newProjectModal, newTodoListBtn, newTodoListModal);
 
     const todoListsContainer = document.createElement("div");
     todoListsContainer.classList.add("todo-lists-container");
@@ -47,9 +47,26 @@ const createNewTodoListModal = () => {
     const todoListNameInput = document.createElement("input");
     todoListNameInput.id = "todo-list-name";
     todoListNameInput.required = "true";
-    todoListName.append(todoListNameLabel, todoListNameInput);
     const todoListNameError = document.createElement("p");
     todoListNameError.classList.add("error", "todo-list-name-error");
+    const spacer = document.createElement("span");
+    todoListName.append(todoListNameLabel, todoListNameInput, spacer, todoListNameError);
+    
+    // Todo list project select
+    const projectSelectContainer = document.createElement("div");
+    projectSelectContainer.classList.add("input-container");
+    const projectSelectLabel = document.createElement("label");
+    projectSelectLabel.setAttribute("for", "project-select");
+    projectSelectLabel.textContent = "Project";
+    const projectSelect = document.createElement("select");
+    projectSelect.id = "project-select";
+    for (const project of Dashboard.projects) {
+        const option = document.createElement("option");
+        option.textContent = project.name;
+        option.value = project.name;
+        projectSelect.append(option);
+    }
+    projectSelectContainer.append(projectSelectLabel, projectSelect);
 
     // Todo list form create and cancel buttons
     const buttonsContainer = document.createElement("div");
@@ -63,7 +80,7 @@ const createNewTodoListModal = () => {
     cancelBtn.textContent = "Cancel";
     buttonsContainer.append(submitBtn, cancelBtn);
 
-    form.append(title, todoListName, todoListNameError, buttonsContainer);
+    form.append(title, todoListName, projectSelectContainer, buttonsContainer);
     newTodoListModal.append(form);
     return newTodoListModal;
 }
@@ -85,9 +102,10 @@ const createNewProjectModal = () => {
     const projectNameInput = document.createElement("input");
     projectNameInput.id = "project-name";
     projectNameInput.required = "true";
-    projectName.append(projectNameLabel, projectNameInput);
     const projectNameError = document.createElement("p");
     projectNameError.classList.add("error", "project-name-error");
+    const nameSpacer = document.createElement("span");
+    projectName.append(projectNameLabel, projectNameInput, nameSpacer, projectNameError);
 
     // Project due date input
     const dueDate = document.createElement("div");
@@ -99,9 +117,10 @@ const createNewProjectModal = () => {
     dueDateInput.type = "date";
     dueDateInput.id = "project-due-date";
     dueDateInput.required = "true";
-    dueDate.append(dueDateLabel, dueDateInput);
     const dueDateError = document.createElement("p");
     dueDateError.classList.add("error", "project-date-error");
+    const dateSpacer = document.createElement("span");
+    dueDate.append(dueDateLabel, dueDateInput, dateSpacer, dueDateError);
 
     // Project form create and cancel buttons
     const buttonsContainer = document.createElement("div");
@@ -115,7 +134,7 @@ const createNewProjectModal = () => {
     cancelBtn.textContent = "Cancel";
     buttonsContainer.append(submitBtn, cancelBtn);
 
-    form.append(title, projectName, projectNameError, dueDate, dueDateError, buttonsContainer);
+    form.append(title, projectName, dueDate, buttonsContainer);
     newProjectModal.append(form);
     return newProjectModal;
 }

@@ -20,12 +20,19 @@ h1 {
 }
 
 .new-todo-list-modal form > div.input-container,
-.new-project-modal > div.input-container {
+.new-project-modal form > div.input-container {
     display: grid;
     grid-template-columns: 1fr 3fr;
     text-align: right;
-    gap: 10px;
+    gap: 5px 10px;
     margin-bottom: 10px;
+}
+
+p.error {
+    margin: 0;
+    text-align: left;
+    color: red;
+    font-size: 0.9rem;
 }
 
 .new-todo-list-modal button,
