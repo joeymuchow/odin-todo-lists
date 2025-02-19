@@ -1,5 +1,5 @@
 import { Dashboard, Project, TodoList } from "./classes";
-import { renderAllTodoLists, renderAllProjects } from "./render";
+import { renderAllTodoLists, renderAllProjects, renderTodoListProjectSelect } from "./render";
 
 const cacheDom = {};
 
@@ -85,10 +85,9 @@ const createNewProject = (e) => {
 
         Dashboard.addProject(project);
 
-        // render new project in sidebar
-
         closeNewProjectModal(e);
         renderAllProjects();
+        renderTodoListProjectSelect();
     } else {
         cacheDom.projectNameError.textContent = nameIsValid ? "" : "This field is required";
         cacheDom.projectDateError.textContent = dateIsValid ? "" : "This field is required";

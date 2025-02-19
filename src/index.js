@@ -1,5 +1,6 @@
 import "./styles.css";
-import { createDashboardElements, renderAllTodoLists, renderAllProjects } from "./render";
+import { createDashboardElements } from "./elements";
+import { renderAllTodoLists, renderAllProjects } from "./render";
 import { Dashboard, Project } from "./classes";
 import bindEvents from "./bindEvents";
 
