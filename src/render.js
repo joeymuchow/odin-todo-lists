@@ -1,8 +1,31 @@
 import { Dashboard } from "./classes";
 
+// TODO create functions for creating elements for viewing a specific project and its todo lists
+
+// also I think when switching between these views we will need to call bindEvents again (or have different bind event calls for each view?)
+
+// Maybe createDashboardElements should have a content section that is a view that changes depending on what the user wants to view
+
 const createDashboardElements = () => {
     // create dashboard html
     const body = document.querySelector("body");
+
+    const contentContainer = document.createElement("div");
+    contentContainer.classList.add("content");
+
+    const sidebar = document.createElement("div");
+    sidebar.classList.add("sidebar");
+
+    const viewAllTodos = document.createElement("a");
+    viewAllTodos.classList.add("view-all-todos");
+    viewAllTodos.textContent = "View all todo lists";
+
+    const projectsLabel = document.createElement("h3");
+    projectsLabel.textContent = "Projects";
+    const projectsContainer = document.createElement("div");
+    projectsContainer.classList.add(("projects-container"));
+
+    sidebar.append(viewAllTodos, projectsLabel, projectsContainer);
 
     const titleContainer = document.createElement("div");
     const title = document.createElement("h1");
@@ -13,7 +36,6 @@ const createDashboardElements = () => {
 
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add("buttons-container");
-    // create new project button to add a project to dashboard class
     const newProjectBtn = document.createElement("button");
     newProjectBtn.classList.add("new-project");
     newProjectBtn.textContent = "New project";
@@ -27,7 +49,9 @@ const createDashboardElements = () => {
     const todoListsContainer = document.createElement("div");
     todoListsContainer.classList.add("todo-lists-container");
 
-    body.append(titleContainer, buttonsContainer, todoListsContainer);
+    contentContainer.append(titleContainer, buttonsContainer, todoListsContainer);
+
+    body.append(sidebar, contentContainer);
 }
 
 const createNewTodoListModal = () => {
@@ -149,6 +173,9 @@ const createTodoListElement = (todoList) => {
     const name = document.createElement("h2");
     name.textContent = todoList.name;
 
+    // create button for adding a todo list item
+    // add event listener to handle that
+
     const todos = document.createElement("ul");
     for (const todoItem of todoList.todoList) {
         const li = document.createElement("li");
@@ -163,22 +190,31 @@ const createTodoListElement = (todoList) => {
         todos.append(li);
     }
 
-    todoListContainer.append(name, todoList);
+    todoListContainer.append(name, todos);
 
     return todoListContainer;
 }
 
 const renderAllTodoLists = () => {
-    const listsToRender = [];
     const todoListsContainer = document.querySelector(".todo-lists-container");
     todoListsContainer.replaceChildren();
     for (const project of Dashboard.projects) {
         for (const todoList of project.todoLists) {
             const element = createTodoListElement(todoList);
-            listsToRender.push(element);
+            todoListsContainer.append(element);
         }
     }
-    todoListsContainer.append(...listsToRender);
 }
 
-export { createDashboardElements, renderAllTodoLists }
+const renderAllProjects = () => {
+    const projectsContainer = document.querySelector(".projects-container");
+    projectsContainer.replaceChildren();
+    for (const project of Dashboard.projects) {
+        const projectElement = document.createElement("a");
+        projectElement.classList.add("project");
+        projectElement.textContent = project.name;
+        projectsContainer.append(projectElement);
+    }
+}
+
+export { createDashboardElements, renderAllTodoLists, renderAllProjects }

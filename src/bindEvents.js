@@ -1,5 +1,5 @@
 import { Dashboard, Project, TodoList } from "./classes";
-import { renderAllTodoLists } from "./render";
+import { renderAllTodoLists, renderAllProjects } from "./render";
 
 const cacheDom = {};
 
@@ -49,11 +49,15 @@ const showNewProjectModal = () => {
 
 const closeNewProjectModal = (e) => {
     e.preventDefault();
+    resetNewProjectModal();
+    cacheDom.newProjectModal.close();
+}
+
+const resetNewProjectModal = () => {
     clearProjectNameError();
     clearProjectDateError();
     cacheDom.projectName.value = "";
     cacheDom.projectDueDate.value = "";
-    cacheDom.newProjectModal.close();
 }
 
 const showNewTodoListModal = () => {
@@ -62,9 +66,13 @@ const showNewTodoListModal = () => {
 
 const closeNewTodoListModal = (e) => {
     e.preventDefault();
+    resetNewTodoListModal();
+    cacheDom.newTodoListModal.close();
+}
+
+const resetNewTodoListModal = () => {
     clearTodoListNameError();
     cacheDom.todoListName.value = "";
-    cacheDom.newTodoListModal.close();
 }
 
 const createNewProject = (e) => {
@@ -78,6 +86,9 @@ const createNewProject = (e) => {
         Dashboard.addProject(project);
 
         // render new project in sidebar
+
+        closeNewProjectModal(e);
+        renderAllProjects();
     } else {
         cacheDom.projectNameError.textContent = nameIsValid ? "" : "This field is required";
         cacheDom.projectDateError.textContent = dateIsValid ? "" : "This field is required";
@@ -90,12 +101,13 @@ const createNewTodoList = (e) => {
     if (nameIsValid) {
         const form = e.target.form;
         const todoList = new TodoList(form[0].value);
-        // should the form have a select element with all the projects
-        // then the chosen project gets the todoList added to it
+        const projectName = form[1].value;
 
-        // create function that gets a project by its name, inside the dashboard class?
+        const project = Dashboard.getProject(projectName);
+        project.addTodoList(todoList);
 
-        // call a render all projects function?
+        closeNewTodoListModal(e);
+
         renderAllTodoLists();
     } else {
         cacheDom.todoListNameError.textContent = "This field is required"

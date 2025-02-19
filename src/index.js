@@ -1,5 +1,5 @@
 import "./styles.css";
-import { createDashboardElements } from "./render";
+import { createDashboardElements, renderAllTodoLists, renderAllProjects } from "./render";
 import { Dashboard, Project } from "./classes";
 import bindEvents from "./bindEvents";
 
@@ -8,4 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Dashboard.addProject(defaultProject);
     createDashboardElements();
     bindEvents();
+    renderAllProjects();
+    renderAllTodoLists();
 });
