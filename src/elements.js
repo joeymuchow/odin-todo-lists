@@ -1,57 +1,5 @@
 import { Dashboard } from "./classes";
 
-// Maybe createDashboardElements should have a content section that is a view that changes depending on what the user wants to view
-
-// also I think when switching between these views we will need to call bindEvents again (or have different bind event calls for each view?)
-
-const createDashboardElements = () => {
-    // create dashboard html
-    const body = document.querySelector("body");
-
-    const content = document.createElement("div");
-    content.classList.add("content");
-
-    const sidebar = document.createElement("div");
-    sidebar.classList.add("sidebar");
-
-    const viewAllTodos = document.createElement("a");
-    viewAllTodos.classList.add("view-all-todos");
-    viewAllTodos.textContent = "View all todo lists";
-
-    const projectsLabel = document.createElement("h3");
-    projectsLabel.textContent = "Projects";
-    const projectsContainer = document.createElement("div");
-    projectsContainer.classList.add(("projects-container"));
-
-    sidebar.append(viewAllTodos, projectsLabel, projectsContainer);
-
-    const titleContainer = document.createElement("div");
-    const title = document.createElement("h1");
-    title.textContent = "Todo Projects";
-    titleContainer.append(title);
-
-    // create sidebar nav that will show projects and view all todos
-
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.classList.add("buttons-container");
-    const newProjectBtn = document.createElement("button");
-    newProjectBtn.classList.add("new-project");
-    newProjectBtn.textContent = "New project";
-    const newProjectModal = createNewProjectModal();
-    const newTodoListBtn = document.createElement("button");
-    newTodoListBtn.classList.add("new-todo-list");
-    newTodoListBtn.textContent = "New todo list";
-    const newTodoListModal = createNewTodoListModal();
-    buttonsContainer.append(newProjectBtn, newProjectModal, newTodoListBtn, newTodoListModal);
-
-    const todoListsContainer = document.createElement("div");
-    todoListsContainer.classList.add("todo-lists-container");
-
-    content.append(titleContainer, buttonsContainer, todoListsContainer);
-
-    body.append(sidebar, content);
-}
-
 const createNewTodoListModal = () => {
     const newTodoListModal = document.createElement("dialog");
     newTodoListModal.classList.add("new-todo-list-modal");
@@ -191,4 +139,4 @@ const createTodoListElement = (todoList) => {
     return todoListContainer;
 }
 
-export { createDashboardElements, createTodoListElement, }
+export { createDashboardElements, createTodoListElement, createNewTodoListModal, createNewProjectModal }
