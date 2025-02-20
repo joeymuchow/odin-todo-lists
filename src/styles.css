@@ -92,3 +92,15 @@ p.error {
 .todo-list .due-date p:first-child {
     margin-right: 10px;
 }
+
+.single-project-container {
+    background-color: blueviolet;
+}
+
+.single-todo-list-container {
+    background-color: darkorange;
+}
+
+.hide {
+    display: none;
+}

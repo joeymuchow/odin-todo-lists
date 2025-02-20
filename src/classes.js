@@ -76,12 +76,12 @@ class TodoList {
 }
 
 class TodoItem {
-    constructor(name, dueDate, description, priority, complete) {
+    constructor(name, dueDate, description, priority) {
         this._name = name;
         this._dueDate = dueDate;
         this._description = description;
         this._priority = priority;
-        this._complete = complete;
+        this._complete = false;
     }
 
     get name() {

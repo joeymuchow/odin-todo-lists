@@ -22,6 +22,10 @@ const cacheDomElements = () => {
     cacheDom.projectNameError = document.querySelector(".project-name-error");
     cacheDom.projectDateError = document.querySelector(".project-date-error");
     cacheDom.todoListNameError = document.querySelector(".todo-list-name-error");
+
+    cacheDom.todoListsContainer = document.querySelector(".todo-lists-container");
+    cacheDom.singleProjectContainer = document.querySelector(".single-project-container");
+    cacheDom.singleTodoListContainer = document.querySelector(".single-todo-list-container");
 }
 
 const bindEvents = () => {
@@ -125,4 +129,22 @@ const clearTodoListNameError = () => {
     cacheDom.todoListNameError.textContent = "";
 }
 
-export default bindEvents;
+const showAllTodos = () => {
+    cacheDom.todoListsContainer.classList.remove("hide");
+    cacheDom.singleProjectContainer.classList.add("hide");
+    cacheDom.singleTodoListContainer.classList.add("hide");
+}
+
+const showSingleProject = () => {
+    cacheDom.singleProjectContainer.classList.remove("hide");
+    cacheDom.todoListsContainer.classList.add("hide");
+    cacheDom.singleTodoListContainer.classList.add("hide");
+}
+
+const showSingleTodoList = () => {
+    cacheDom.singleTodoListContainer.classList.remove("hide");
+    cacheDom.todoListsContainer.classList.add("hide");
+    cacheDom.singleProjectContainer.classList.add("hide");
+}
+
+export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList };

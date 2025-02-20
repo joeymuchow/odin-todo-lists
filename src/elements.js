@@ -139,4 +139,4 @@ const createTodoListElement = (todoList) => {
     return todoListContainer;
 }
 
-export { createDashboardElements, createTodoListElement, createNewTodoListModal, createNewProjectModal }
+export { createTodoListElement, createNewTodoListModal, createNewProjectModal }

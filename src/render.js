@@ -1,14 +1,6 @@
+import { bindEvents, showAllTodos, showSingleProject } from "./bindEvents";
 import { Dashboard } from "./classes";
 import { createTodoListElement, createNewProjectModal, createNewTodoListModal } from "./elements";
-
-// TODO create functions for creating elements for viewing a specific project and its todo lists
-
-// TODO make these functions
-// renderBody - renders the html body with the sidebar and containers
-// renderViewAllTodos - renders all the todo lists from every project
-// renderProject - renders all the todo lists in a specific project
-// refactor createDashboardElements so that the content part is in renderViewAllTodos and the containers part is in renderBody
-// then call those in index.js
 
 const renderBody = () => {
     const body = document.querySelector("body");
@@ -33,7 +25,17 @@ const renderBody = () => {
     const newTodoListModal = createNewTodoListModal();
     buttonsContainer.append(newProjectBtn, newProjectModal, newTodoListBtn, newTodoListModal);
 
-    content.append(titleContainer, buttonsContainer);
+    const todoListsContainer = document.createElement("div");
+    todoListsContainer.classList.add("todo-lists-container");
+
+    // all todo lists view is the default view so hide other two
+    const singleProjectContainer = document.createElement("div");
+    singleProjectContainer.classList.add("single-project-container", "hide");
+
+    const singleTodoListContainer = document.createElement("div");
+    singleTodoListContainer.classList.add("single-todo-list-container", "hide");
+
+    content.append(titleContainer, buttonsContainer, todoListsContainer, singleProjectContainer, singleTodoListContainer);
 
     const sidebar = document.createElement("div");
     sidebar.classList.add("sidebar");
@@ -49,27 +51,27 @@ const renderBody = () => {
 
     sidebar.append(viewAllTodos, projectsLabel, projectsContainer);
     body.append(sidebar, content);
+
+    bindEvents();
+
+    // TODO maybe this event listener should just be in bind events
+    viewAllTodos.addEventListener("click", renderAllTodoLists);
     renderAllProjectsSidebar();
-}
-
-renderViewAllTodos = () => {
-    const content = document.querySelector(".content");
-    
-    const todoListsContainer = document.createElement("div");
-    todoListsContainer.classList.add("todo-lists-container");
-
-    content.append(todoListsContainer);
     renderAllTodoLists();
 }
 
 const renderProject = (project) => {
     // render the specific project passed in
+    console.log("showing a single project");
+    showSingleProject();
 
-    // 
+    // list each todo list that is a part of it
 }
 
-const showAllTodosView = () => {
-    
+const renderTodoList = () => {
+    // render a specific todo list from a specific project
+
+    // list each todo item from the todo list
 }
 
 const renderAllTodoLists = () => {
@@ -81,6 +83,7 @@ const renderAllTodoLists = () => {
             todoListsContainer.append(element);
         }
     }
+    showAllTodos();
 }
 
 const renderAllProjectsSidebar = () => {
@@ -90,6 +93,7 @@ const renderAllProjectsSidebar = () => {
         const projectElement = document.createElement("a");
         projectElement.classList.add("project");
         projectElement.textContent = project.name;
+        projectElement.addEventListener("click", renderProject);
         projectsContainer.append(projectElement);
     }
 }
