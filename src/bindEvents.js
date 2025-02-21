@@ -81,6 +81,7 @@ const resetNewTodoListModal = () => {
 
 const createNewProject = (e) => {
     e.preventDefault();
+    // TODO create check for if a project name already exists
     const nameIsValid = cacheDom.projectName.checkValidity();
     const dateIsValid = cacheDom.projectDueDate.checkValidity();
     if (nameIsValid && dateIsValid) {
@@ -100,6 +101,7 @@ const createNewProject = (e) => {
 
 const createNewTodoList = (e) => {
     e.preventDefault();
+    // TODO create check for if a todo list name already exists in the project
     const nameIsValid = document.querySelector("#todo-list-name").checkValidity();
     if (nameIsValid) {
         const form = e.target.form;
@@ -116,6 +118,8 @@ const createNewTodoList = (e) => {
         cacheDom.todoListNameError.textContent = "This field is required"
     }
 }
+
+// TODO createNewTodoItem
 
 const clearProjectNameError = () => {
     cacheDom.projectNameError.textContent = "";

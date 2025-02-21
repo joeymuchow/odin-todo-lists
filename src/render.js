@@ -61,15 +61,40 @@ const renderBody = () => {
 }
 
 const renderProject = (project) => {
-    // render the specific project passed in
-    console.log("showing a single project");
+    // render a specific project
     showSingleProject();
 
-    // list each todo list that is a part of it
+    const container = document.querySelector(".single-project-container");
+    container.replaceChildren();
+    const card = document.createElement("div");
+    card.classList.add("card");
+    const projectName = document.createElement("h2");
+    projectName.classList.add("project-name");
+    projectName.textContent = project.name;
+    const projectDueDate = document.createElement("p");
+    projectDueDate.textContent = "Due date: " + project.dueDate;
+    const line = document.createElement("hr");
+    const todoLists = document.createElement("ul");
+    
+    for (const todoList of project.todoLists) {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.textContent = todoList.name;
+        li.append(link);
+        todoLists.append(li);
+        link.addEventListener("click", () => {
+            renderTodoList(project, todoList);
+        });
+    }
+
+    card.append(projectName, projectDueDate, line, todoLists);
+    container.append(card);
 }
 
-const renderTodoList = () => {
+const renderTodoList = (project, todoList) => {
     // render a specific todo list from a specific project
+    console.log(project);
+    console.log(todoList);
 
     // list each todo item from the todo list
 }
@@ -93,7 +118,9 @@ const renderAllProjectsSidebar = () => {
         const projectElement = document.createElement("a");
         projectElement.classList.add("project");
         projectElement.textContent = project.name;
-        projectElement.addEventListener("click", renderProject);
+        projectElement.addEventListener("click", () => {
+            renderProject(project);
+        });
         projectsContainer.append(projectElement);
     }
 }

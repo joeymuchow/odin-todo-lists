@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -6,22 +10,46 @@ body {
     grid-template-columns: 1fr 4fr;
 }
 
+a {
+    cursor: pointer;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
 .content {
     display: grid;
     grid-template-rows: auto auto 1fr;
 }
 
 .sidebar {
-    background-color: cadetblue;
+    background-color: #eaeaea;
+    padding: 50px 0 0 5%;
 }
 
-.projects-container {
-    display: grid;
-    grid-template-columns: 1fr;
+.projects-container .project {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
 }
 
 h1 {
     text-align: center;
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
 }
 
 .buttons-container {
@@ -94,7 +122,25 @@ p.error {
 }
 
 .single-project-container {
-    background-color: blueviolet;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 5% 15%;
+    display: flex;
+    justify-content: center;
+}
+
+.single-project-container .card {
+    background-color: #fefefe;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    width: clamp(200px, 65%, 600px);
+    padding: 0 12% 5%;
+    max-height: fit-content;
+}
+
+.single-project-container li {
+    text-align: left;
+    padding: 5px 15px;
 }
 
 .single-todo-list-container {
