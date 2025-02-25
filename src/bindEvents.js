@@ -1,12 +1,11 @@
 import { Dashboard, Project, TodoList, TodoItem } from "./classes";
-import { renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSelect } from "./render";
+import { renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSelect, renderTodoList } from "./render";
 
 const cacheDom = {};
 
 const cacheDomElements = () => {
     cacheDom.newProject = document.querySelector(".new-project");
     cacheDom.newTodoList = document.querySelector(".new-todo-list");
-    cacheDom.newTodoItem = document.querySelector(".new-todo-item");
 
     cacheDom.createProject = document.querySelector(".create-project");
     cacheDom.cancelProject = document.querySelector(".cancel-project");
@@ -18,10 +17,11 @@ const cacheDomElements = () => {
     cacheDom.projectName = document.querySelector("#project-name");
     cacheDom.projectDueDate = document.querySelector("#project-due-date");
     cacheDom.todoListName = document.querySelector("#todo-list-name");
+    cacheDom.todoListProject = document.querySelector("#project-select");
     cacheDom.todoItemName = document.querySelector("#todo-item-name");
-    cacheDom.todoItemName = document.querySelector("#todo-item-due-date");
-    cacheDom.todoItemName = document.querySelector("#todo-item-description");
-    cacheDom.todoItemName = document.querySelector("#todo-item-priority");
+    cacheDom.todoItemDueDate = document.querySelector("#todo-item-due-date");
+    cacheDom.todoItemDesc = document.querySelector("#todo-item-description");
+    cacheDom.todoItemPriority = document.querySelector("#priority-select");
 
     cacheDom.newProjectModal = document.querySelector(".new-project-modal");
     cacheDom.newTodoListModal = document.querySelector(".new-todo-list-modal");
@@ -33,7 +33,6 @@ const cacheDomElements = () => {
     cacheDom.todoItemNameError = document.querySelector(".todo-item-name-error");
     cacheDom.todoItemDateError = document.querySelector(".todo-item-date-error");
     cacheDom.todoItemDescError = document.querySelector(".todo-item-desc-error");
-    cacheDom.todoItemPriorityError = document.querySelector(".todo-item-priority-error");
 
     cacheDom.todoListsContainer = document.querySelector(".todo-lists-container");
     cacheDom.singleProjectContainer = document.querySelector(".single-project-container");
@@ -45,7 +44,6 @@ const bindEvents = () => {
 
     cacheDom.newProject.addEventListener("click", showNewProjectModal);
     cacheDom.newTodoList.addEventListener("click", showNewTodoListModal);
-    cacheDom.newTodoItem.addEventListener("click", showNewTodoItemModal);
     
     cacheDom.createProject.addEventListener("click", createNewProject);
     cacheDom.cancelProject.addEventListener("click", closeNewProjectModal);
@@ -54,12 +52,20 @@ const bindEvents = () => {
     cacheDom.createTodoItem.addEventListener("click", createNewTodoItem);
     cacheDom.cancelTodoItem.addEventListener("click", closeNewTodoItemModal);
 
-    cacheDom.projectName.addEventListener("keypress", clearProjectNameError);
-    cacheDom.projectName.addEventListener("change", clearProjectNameError);
-    cacheDom.projectDueDate.addEventListener("keypress", clearProjectDateError);
-    cacheDom.projectDueDate.addEventListener("change", clearProjectDateError);
-    cacheDom.todoListName.addEventListener("keypress", clearTodoListNameError);
-    cacheDom.todoListName.addEventListener("change", clearTodoListNameError);
+    cacheDom.projectName.addEventListener("keypress", () => clearError(cacheDom.projectNameError));
+    cacheDom.projectName.addEventListener("change", () => clearError(cacheDom.projectNameError));
+    cacheDom.projectDueDate.addEventListener("keypress", () => clearError(cacheDom.projectDateError));
+    cacheDom.projectDueDate.addEventListener("change", () => clearError(cacheDom.projectDateError));
+
+    cacheDom.todoListName.addEventListener("keypress", () => clearError(cacheDom.todoListNameError));
+    cacheDom.todoListName.addEventListener("change", () => clearError(cacheDom.todoListNameError));
+
+    cacheDom.todoItemName.addEventListener("keypress", () => clearError(cacheDom.todoItemNameError));
+    cacheDom.todoItemName.addEventListener("change", () => clearError(cacheDom.todoItemNameError));
+    cacheDom.todoItemDueDate.addEventListener("keypress", () => clearError(cacheDom.todoItemDateError));
+    cacheDom.todoItemDueDate.addEventListener("change", () => clearError(cacheDom.todoItemDateError));
+    cacheDom.todoItemDesc.addEventListener("keypress", () => clearError(cacheDom.todoItemDescError));
+    cacheDom.todoItemDesc.addEventListener("change", () => clearError(cacheDom.todoItemDescError));
 }
 
 const showNewProjectModal = () => {
@@ -73,8 +79,8 @@ const closeNewProjectModal = (e) => {
 }
 
 const resetNewProjectModal = () => {
-    clearProjectNameError();
-    clearProjectDateError();
+    clearError(cacheDom.projectNameError);
+    clearError(cacheDom.projectDateError);
     cacheDom.projectName.value = "";
     cacheDom.projectDueDate.value = "";
 }
@@ -90,8 +96,10 @@ const closeNewTodoListModal = (e) => {
 }
 
 const resetNewTodoListModal = () => {
-    clearTodoListNameError();
+    clearError(cacheDom.todoListNameError);
     cacheDom.todoListName.value = "";
+    // reset select element to first option ("Default")
+    cacheDom.todoListProject.selectedIndex = 0;
 }
 
 const showNewTodoItemModal = () => {
@@ -104,7 +112,16 @@ const closeNewTodoItemModal = (e) => {
     cacheDom.newTodoItemModal.close();
 }
 
-const resetNewTodoItemModal = () => {}
+const resetNewTodoItemModal = () => {
+    clearError(cacheDom.todoItemNameError);
+    clearError(cacheDom.todoItemDateError);
+    clearError(cacheDom.todoItemDescError);
+    cacheDom.todoItemName.value = "";
+    cacheDom.todoItemDueDate.value = "";
+    cacheDom.todoItemDesc.value = "";
+    // reset select element to first option ("Low")
+    cacheDom.todoItemPriority.selectedIndex = 0;
+}
 
 const createNewProject = (e) => {
     e.preventDefault();
@@ -147,13 +164,11 @@ const createNewTodoList = (e) => {
 }
 
 const createNewTodoItem = (e) => {
-    // TODO get the project and todo list names to then get the objects themselves so we can add the item to the correct list
     e.preventDefault();
     const nameIsValid = document.querySelector("#todo-item-name").checkValidity();
     const dateIsValid = document.querySelector("#todo-item-due-date").checkValidity();
     const descIsValid = document.querySelector("#todo-item-description").checkValidity();
-    const priorityIsValid = document.querySelector("#todo-item-priority").checkValidity();
-    if (nameIsValid && dateIsValid && descIsValid && priorityIsValid) {
+    if (nameIsValid && dateIsValid && descIsValid) {
         const dataset = document.querySelector(".new-todo-item").dataset;
         const projectName = dataset.projectName;
         const todoListName = dataset.todoListName;
@@ -167,28 +182,19 @@ const createNewTodoItem = (e) => {
         const todoItem = new TodoItem(name, dueDate, description, priority);
         // add item to todoList
         todoList.addTodo(todoItem);
+        
+        closeNewTodoItemModal(e);
+
+        renderTodoList(project, todoList);
     } else {
         cacheDom.todoItemNameError.textContent = nameIsValid ? "" : "This field is required";
         cacheDom.todoItemDateError.textContent = dateIsValid ? "" : "This field is required";
         cacheDom.todoItemDescError.textContent = descIsValid ? "" : "This field is required";
-        cacheDom.todoItemPriorityError.textContent = priorityIsValid ? "" : "This field is required";
     }
 }
 
-// TODO create clear error function that takes 1 param and clears the textContent of the param
-// attach that function to each input change and keypress addEventListener
-// I think you can do cacheDom[param] to access the field
-
-const clearProjectNameError = () => {
-    cacheDom.projectNameError.textContent = "";
-}
-
-const clearProjectDateError = () => {
-    cacheDom.projectDateError.textContent = "";
-}
-
-const clearTodoListNameError = () => {
-    cacheDom.todoListNameError.textContent = "";
+const clearError = (error) => {
+    error.textContent = "";
 }
 
 const showAllTodos = () => {
@@ -209,4 +215,4 @@ const showSingleTodoList = () => {
     cacheDom.singleProjectContainer.classList.add("hide");
 }
 
-export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList };
+export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal };

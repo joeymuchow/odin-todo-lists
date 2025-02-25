@@ -9,24 +9,15 @@ const createNewProjectModal = () => {
     title.textContent = "New Project";
 
     // Project name input
-    const projectNameInput = createInput("project-name", "text", "true", "project-name-error");
+    const projectNameInput = createInput("project-name", "text", "Name", "true", "project-name-error");
 
     // Project due date input
-    const projectDueDateInput = createInput("project-due-date", "date", "true", "project-date-error");
+    const projectDueDateInput = createInput("project-due-date", "date", "Date", "true", "project-date-error");
 
     // Project form create and cancel buttons
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.classList.add("buttons-container");
-    const submitBtn = document.createElement("button");
-    submitBtn.classList.add("create-project");
-    submitBtn.type = "submit";
-    submitBtn.textContent = "Create";
-    const cancelBtn = document.createElement("button");
-    cancelBtn.classList.add("cancel-project");
-    cancelBtn.textContent = "Cancel";
-    buttonsContainer.append(submitBtn, cancelBtn);
+    const projectButtons = createModalButtons("create-project", "cancel-project");
 
-    form.append(title, projectNameInput, projectDueDateInput, buttonsContainer);
+    form.append(title, projectNameInput, projectDueDateInput, projectButtons);
     newProjectModal.append(form);
     return newProjectModal;
 }
@@ -40,37 +31,15 @@ const createNewTodoListModal = () => {
     title.textContent = "New Todo List";
 
     // Todo list name input
-    const todoListNameInput = createInput("todo-list-name", "text", "true", "todo-list-name-error");
+    const todoListNameInput = createInput("todo-list-name", "text", "Name", "true", "todo-list-name-error");
     
     // Todo list project select
-    const projectSelectContainer = document.createElement("div");
-    projectSelectContainer.classList.add("input-container");
-    const projectSelectLabel = document.createElement("label");
-    projectSelectLabel.setAttribute("for", "project-select");
-    projectSelectLabel.textContent = "Project";
-    const projectSelect = document.createElement("select");
-    projectSelect.id = "project-select";
-    for (const project of Dashboard.projects) {
-        const option = document.createElement("option");
-        option.textContent = project.name;
-        option.value = project.name;
-        projectSelect.append(option);
-    }
-    projectSelectContainer.append(projectSelectLabel, projectSelect);
+    const projectSelect = createSelect("project-select", "Project", Dashboard.projects);
 
     // Todo list form create and cancel buttons
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.classList.add("buttons-container");
-    const submitBtn = document.createElement("button");
-    submitBtn.classList.add("create-todo-list");
-    submitBtn.type = "submit";
-    submitBtn.textContent = "Create";
-    const cancelBtn = document.createElement("button");
-    cancelBtn.classList.add("cancel-todo-list");
-    cancelBtn.textContent = "Cancel";
-    buttonsContainer.append(submitBtn, cancelBtn);
+    const todoListButtons = createModalButtons("create-todo-list", "cancel-todo-list");
 
-    form.append(title, todoListNameInput, projectSelectContainer, buttonsContainer);
+    form.append(title, todoListNameInput, projectSelect, todoListButtons);
     newTodoListModal.append(form);
     return newTodoListModal;
 }
@@ -84,30 +53,33 @@ const createTodoItemModal = () => {
     title.textContent = "New Todo";
 
     // Todo item name input
-    const todoItemName = createInput("todo-item-name", "text", "true", "todo-item-name-error");
+    const todoItemName = createInput("todo-item-name", "text", "Name", "true", "todo-item-name-error");
 
     // Todo item due date input
-    const todoItemDueDate = createInput("todo-item-due-date", "date", "true", "todo-item-date-error");
+    const todoItemDueDate = createInput("todo-item-due-date", "date", "Date", "true", "todo-item-date-error");
 
     // Todo item description input
-    const todoItemDesc = createInput("todo-item-description", "text", "true", "todo-item-desc-error");
+    const todoItemDesc = createInput("todo-item-description", "text", "Description", "true", "todo-item-desc-error");
 
     // Todo item priority select
-    // probably use something else to make the select for priority
+    const todoItemPriority = createSelect("priority-select", "Priority", ["Low", "Medium", "High"]);
 
-    form.append(title, todoItemName, todoItemDueDate, todoItemDesc);
+    // Todo item buttons container
+    const todoItemButtons = createModalButtons("create-todo-item", "cancel-todo-item");
+
+    form.append(title, todoItemName, todoItemDueDate, todoItemDesc, todoItemPriority, todoItemButtons);
 
     newTodoItemModal.append(form);
     return newTodoItemModal;
 }
 
-const createInput = (id, type, required, errorClass) => {
+const createInput = (id, type, text, required, errorClass) => {
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("input-container");
 
     const inputLabel = document.createElement("label");
     inputLabel.setAttribute("for", id);
-    inputLabel.textContent = "Name";
+    inputLabel.textContent = text;
 
     const input = document.createElement("input");
     input.id = id;
@@ -121,6 +93,40 @@ const createInput = (id, type, required, errorClass) => {
     inputContainer.append(inputLabel, input, spacer, inputError);
 
     return inputContainer;
+}
+
+const createSelect = (id, label, array) => {
+    const selectContainer = document.createElement("div");
+    selectContainer.classList.add("input-container");
+    const selectLabel = document.createElement("label");
+    selectLabel.setAttribute("for", id);
+    selectLabel.textContent = label;
+    const projectSelect = document.createElement("select");
+    projectSelect.id = id;
+    for (const item of array) {
+        const option = document.createElement("option");
+        // if item is a string set textContent and value to it
+        // otherwise item will be an object so get its name
+        option.textContent = typeof item === "string" ? item : item.name;
+        option.value = typeof item === "string" ? item : item.name;
+        projectSelect.append(option);
+    }
+    selectContainer.append(selectLabel, projectSelect);
+    return selectContainer;
+}
+
+const createModalButtons = (createClass, cancelClass) => {
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("buttons-container");
+    const submitBtn = document.createElement("button");
+    submitBtn.classList.add(createClass);
+    submitBtn.type = "submit";
+    submitBtn.textContent = "Create";
+    const cancelBtn = document.createElement("button");
+    cancelBtn.classList.add(cancelClass);
+    cancelBtn.textContent = "Cancel";
+    buttonsContainer.append(submitBtn, cancelBtn);
+    return buttonsContainer;
 }
 
 const createTodoListSummaryElement = (todoList) => {

@@ -57,7 +57,8 @@ h3 {
 }
 
 .new-todo-list-modal,
-.new-project-modal {
+.new-project-modal,
+.new-todo-item-modal {
     bottom: 40%;
 }
 
@@ -129,7 +130,8 @@ p.error {
     justify-content: center;
 }
 
-.single-project-container .card {
+.single-project-container .card,
+.single-todo-list-container .card {
     background-color: #fefefe;
     border: 1px solid #000000;
     border-radius: 10px;

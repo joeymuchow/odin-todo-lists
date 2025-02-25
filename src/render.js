@@ -1,4 +1,4 @@
-import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList } from "./bindEvents";
+import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal } from "./bindEvents";
 import { Dashboard } from "./classes";
 import { createTodoListSummaryElement, createNewProjectModal, createNewTodoListModal, createTodoItemModal } from "./elements";
 
@@ -41,7 +41,7 @@ const renderBody = () => {
     const singleTodoListContainer = document.createElement("div");
     singleTodoListContainer.classList.add("single-todo-list-container", "hide");
 
-    content.append(titleContainer, buttonsContainer, todoListsContainer, singleProjectContainer, singleTodoListContainer);
+    content.append(titleContainer, buttonsContainer, todoListsContainer, singleProjectContainer, singleTodoListContainer, modalContainer);
 
     const sidebar = document.createElement("div");
     sidebar.classList.add("sidebar");
@@ -135,7 +135,9 @@ const renderTodoList = (project, todoList) => {
     addTodoBtn.classList.add("new-todo-item");
     addTodoBtn.setAttribute("data-project-name", project.name);
     addTodoBtn.setAttribute("data-todo-list-name", todoList.name);
-    addTodoBtn.addEventListener("click", showNewTodoModal);
+    addTodoBtn.addEventListener("click", showNewTodoItemModal);
+    addTodoBtn.textContent = "Add todo";
+    todos.append(addTodoBtn);
 
     card.append(todoListName, todos);
     container.append(card);
@@ -178,4 +180,4 @@ const renderTodoListProjectSelect = () => {
     }
 }
 
-export { renderBody, renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSelect }
+export { renderBody, renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSelect, renderTodoList }
