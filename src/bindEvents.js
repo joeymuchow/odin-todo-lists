@@ -1,23 +1,31 @@
-import { Dashboard, Project, TodoList } from "./classes";
+import { Dashboard, Project, TodoList, TodoItem } from "./classes";
 import { renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSelect } from "./render";
 
 const cacheDom = {};
 
 const cacheDomElements = () => {
     cacheDom.newProject = document.querySelector(".new-project");
-    cacheDom.cancelProject = document.querySelector(".cancel-project");
     cacheDom.newTodoList = document.querySelector(".new-todo-list");
-    cacheDom.cancelTodoList = document.querySelector(".cancel-todo-list");
+    cacheDom.newTodoItem = document.querySelector(".new-todo-item");
 
     cacheDom.createProject = document.querySelector(".create-project");
+    cacheDom.cancelProject = document.querySelector(".cancel-project");
     cacheDom.createTodoList = document.querySelector(".create-todo-list");
+    cacheDom.cancelTodoList = document.querySelector(".cancel-todo-list");
+    cacheDom.createTodoItem = document.querySelector(".create-todo-item");
+    cacheDom.cancelTodoItem = document.querySelector(".cancel-todo-item");
 
     cacheDom.projectName = document.querySelector("#project-name");
     cacheDom.projectDueDate = document.querySelector("#project-due-date");
     cacheDom.todoListName = document.querySelector("#todo-list-name");
+    cacheDom.todoItemName = document.querySelector("#todo-item-name");
+    cacheDom.todoItemName = document.querySelector("#todo-item-due-date");
+    cacheDom.todoItemName = document.querySelector("#todo-item-description");
+    cacheDom.todoItemName = document.querySelector("#todo-item-priority");
 
     cacheDom.newProjectModal = document.querySelector(".new-project-modal");
     cacheDom.newTodoListModal = document.querySelector(".new-todo-list-modal");
+    cacheDom.newTodoItemModal = document.querySelector(".new-todo-item-modal");
 
     cacheDom.projectNameError = document.querySelector(".project-name-error");
     cacheDom.projectDateError = document.querySelector(".project-date-error");
@@ -32,12 +40,15 @@ const bindEvents = () => {
     cacheDomElements();
 
     cacheDom.newProject.addEventListener("click", showNewProjectModal);
-    cacheDom.cancelProject.addEventListener("click", closeNewProjectModal);
     cacheDom.newTodoList.addEventListener("click", showNewTodoListModal);
-    cacheDom.cancelTodoList.addEventListener("click", closeNewTodoListModal);
-
+    cacheDom.newTodoItem.addEventListener("click", showNewTodoItemModal);
+    
     cacheDom.createProject.addEventListener("click", createNewProject);
+    cacheDom.cancelProject.addEventListener("click", closeNewProjectModal);
     cacheDom.createTodoList.addEventListener("click", createNewTodoList);
+    cacheDom.cancelTodoList.addEventListener("click", closeNewTodoListModal);
+    cacheDom.createTodoItem.addEventListener("click", createNewTodoItem);
+    cacheDom.cancelTodoItem.addEventListener("click", closeNewTodoItemModal);
 
     cacheDom.projectName.addEventListener("keypress", clearProjectNameError);
     cacheDom.projectName.addEventListener("change", clearProjectNameError);
@@ -79,6 +90,18 @@ const resetNewTodoListModal = () => {
     cacheDom.todoListName.value = "";
 }
 
+const showNewTodoItemModal = () => {
+    cacheDom.newTodoItemModal.showModal();
+}
+
+const closeNewTodoItemModal = (e) => {
+    e.preventDefault();
+    resetNewTodoItemModal();
+    cacheDom.newTodoItemModal.close();
+}
+
+const resetNewTodoItemModal = () => {}
+
 const createNewProject = (e) => {
     e.preventDefault();
     // TODO create check for if a project name already exists
@@ -115,11 +138,36 @@ const createNewTodoList = (e) => {
 
         renderAllTodoLists();
     } else {
-        cacheDom.todoListNameError.textContent = "This field is required"
+        cacheDom.todoListNameError.textContent = "This field is required";
     }
 }
 
-// TODO createNewTodoItem
+const createNewTodoItem = (e) => {
+    // TODO get the project and todo list names to then get the objects themselves so we can add the item to the correct list
+    e.preventDefault();
+    const nameIsValid = document.querySelector("#todo-item-name").checkValidity();
+    const dateIsValid = document.querySelector("#todo-item-due-date").checkValidity();
+    const descIsValid = document.querySelector("#todo-item-description").checkValidity();
+    const priorityIsValid = document.querySelector("#todo-item-priority").checkValidity();
+    if (nameIsValid && dateIsValid && descIsValid && priorityIsValid) {
+        const form = e.target.form;
+        const name = form[0].value;
+        const dueDate = form[1].value;
+        const description = form[2].value;
+        const priority = form[3].value;
+        const todoItem = new TodoItem(name, dueDate, description, priority);
+        // add item to todoList
+    } else {
+        cacheDom.todoItemNameError.textContent = nameIsValid ? "" : "This field is required";
+        cacheDom.todoItemDateError.textContent = dateIsValid ? "" : "This field is required";
+        cacheDom.todoItemDescError.textContent = descIsValid ? "" : "This field is required";
+        cacheDom.todoItemPriorityError.textContent = priorityIsValid ? "" : "This field is required";
+    }
+}
+
+// TODO create clear error function that takes 1 param and clears the textContent of the param
+// attach that function to each input change and keypress addEventListener
+// I think you can do cacheDom[param] to access the field
 
 const clearProjectNameError = () => {
     cacheDom.projectNameError.textContent = "";

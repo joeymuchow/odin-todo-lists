@@ -1,4 +1,4 @@
-import { bindEvents, showAllTodos, showSingleProject } from "./bindEvents";
+import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList } from "./bindEvents";
 import { Dashboard } from "./classes";
 import { createTodoListElement, createNewProjectModal, createNewTodoListModal } from "./elements";
 
@@ -93,10 +93,46 @@ const renderProject = (project) => {
 
 const renderTodoList = (project, todoList) => {
     // render a specific todo list from a specific project
-    console.log(project);
-    console.log(todoList);
+    showSingleTodoList();
+
+    const container = document.querySelector(".single-todo-list-container");
+    container.replaceChildren();
+    const card = document.createElement("div");
+    card.classList.add("card");
+    const todoListName = document.createElement("h2");
+    todoListName.classList.add("todo-list-name");
+    todoListName.textContent = todoList.name;
 
     // list each todo item from the todo list
+    const todos = document.createElement("ul");
+
+    for (const todo of todoList.todoList) {
+        const li = document.createElement("li");
+        const name = document.createElement("p");
+        name.textContent = todo.name;
+        const dueDate = document.createElement("p");
+        dueDate.textContent = todo.dueDate;
+        const description = document.createElement("p");
+        description.textContent = todo.description;
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = todo.complete;
+        checkbox.addEventListener("change", () => {
+            todo.updateCompleteStatus();
+        });
+
+        li.append(checkbox, name, dueDate, description);
+        todos.append(li);
+    }
+
+    const addTodoBtn = document.createElement("button");
+    addTodoBtn.classList.add("create-todo-item");
+    addTodoBtn.setAttribute("data-project-name", project.name);
+    addTodoBtn.setAttribute("data-todo-list-name", todoList.name);
+    addTodoBtn.addEventListener("click", showNewTodoModal);
+
+    card.append(todoListName, todos);
+    container.append(card);
 }
 
 const renderAllTodoLists = () => {

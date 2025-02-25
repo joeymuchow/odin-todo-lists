@@ -14,6 +14,7 @@ class Dashboard {
         for (const project of this.projects) {
             if (project.name === name) {
                 result = project;
+                break;
             }
         }
         return result;
@@ -49,6 +50,17 @@ class Project {
 
     deleteTodoList(index) {
         this.todoLists.splice(index, 1);
+    }
+
+    getTodoList(name) {
+        let result;
+        for (const todoList of this.todoLists) {
+            if (todoList.name === name) {
+                result = todoList;
+                break;
+            }
+        }
+        return result;
     }
 }
 
