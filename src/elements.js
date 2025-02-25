@@ -1,5 +1,36 @@
 import { Dashboard } from "./classes";
 
+const createNewProjectModal = () => {
+    const newProjectModal = document.createElement("dialog");
+    newProjectModal.classList.add("new-project-modal");
+
+    const form = document.createElement("form");
+    const title = document.createElement("h2");
+    title.textContent = "New Project";
+
+    // Project name input
+    const projectNameInput = createInput("project-name", "text", "true", "project-name-error");
+
+    // Project due date input
+    const projectDueDateInput = createInput("project-due-date", "date", "true", "project-date-error");
+
+    // Project form create and cancel buttons
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("buttons-container");
+    const submitBtn = document.createElement("button");
+    submitBtn.classList.add("create-project");
+    submitBtn.type = "submit";
+    submitBtn.textContent = "Create";
+    const cancelBtn = document.createElement("button");
+    cancelBtn.classList.add("cancel-project");
+    cancelBtn.textContent = "Cancel";
+    buttonsContainer.append(submitBtn, cancelBtn);
+
+    form.append(title, projectNameInput, projectDueDateInput, buttonsContainer);
+    newProjectModal.append(form);
+    return newProjectModal;
+}
+
 const createNewTodoListModal = () => {
     const newTodoListModal = document.createElement("dialog");
     newTodoListModal.classList.add("new-todo-list-modal");
@@ -9,18 +40,7 @@ const createNewTodoListModal = () => {
     title.textContent = "New Todo List";
 
     // Todo list name input
-    const todoListName = document.createElement("div");
-    todoListName.classList.add("input-container");
-    const todoListNameLabel = document.createElement("label");
-    todoListNameLabel.setAttribute("for", "todo-list-name");
-    todoListNameLabel.textContent = "Name";
-    const todoListNameInput = document.createElement("input");
-    todoListNameInput.id = "todo-list-name";
-    todoListNameInput.required = "true";
-    const todoListNameError = document.createElement("p");
-    todoListNameError.classList.add("error", "todo-list-name-error");
-    const spacer = document.createElement("span");
-    todoListName.append(todoListNameLabel, todoListNameInput, spacer, todoListNameError);
+    const todoListNameInput = createInput("todo-list-name", "text", "true", "todo-list-name-error");
     
     // Todo list project select
     const projectSelectContainer = document.createElement("div");
@@ -50,67 +70,60 @@ const createNewTodoListModal = () => {
     cancelBtn.textContent = "Cancel";
     buttonsContainer.append(submitBtn, cancelBtn);
 
-    form.append(title, todoListName, projectSelectContainer, buttonsContainer);
+    form.append(title, todoListNameInput, projectSelectContainer, buttonsContainer);
     newTodoListModal.append(form);
     return newTodoListModal;
 }
 
-const createNewProjectModal = () => {
-    const newProjectModal = document.createElement("dialog");
-    newProjectModal.classList.add("new-project-modal");
+const createTodoItemModal = () => {
+    const newTodoItemModal = document.createElement("dialog");
+    newTodoItemModal.classList.add("new-todo-item-modal");
 
     const form = document.createElement("form");
     const title = document.createElement("h2");
-    title.textContent = "New Project";
+    title.textContent = "New Todo";
 
-    // Project name input
-    const projectName = document.createElement("div");
-    projectName.classList.add("input-container");
-    const projectNameLabel = document.createElement("label");
-    projectNameLabel.setAttribute("for", "project-name");
-    projectNameLabel.textContent = "Name";
-    const projectNameInput = document.createElement("input");
-    projectNameInput.id = "project-name";
-    projectNameInput.required = "true";
-    const projectNameError = document.createElement("p");
-    projectNameError.classList.add("error", "project-name-error");
-    const nameSpacer = document.createElement("span");
-    projectName.append(projectNameLabel, projectNameInput, nameSpacer, projectNameError);
+    // Todo item name input
+    const todoItemName = createInput("todo-item-name", "text", "true", "todo-item-name-error");
 
-    // Project due date input
-    const dueDate = document.createElement("div");
-    dueDate.classList.add("input-container");
-    const dueDateLabel = document.createElement("label");
-    dueDateLabel.textContent = "Due Date";
-    dueDateLabel.setAttribute("for", "project-due-date");
-    const dueDateInput = document.createElement("input");
-    dueDateInput.type = "date";
-    dueDateInput.id = "project-due-date";
-    dueDateInput.required = "true";
-    const dueDateError = document.createElement("p");
-    dueDateError.classList.add("error", "project-date-error");
-    const dateSpacer = document.createElement("span");
-    dueDate.append(dueDateLabel, dueDateInput, dateSpacer, dueDateError);
+    // Todo item due date input
+    const todoItemDueDate = createInput("todo-item-due-date", "date", "true", "todo-item-date-error");
 
-    // Project form create and cancel buttons
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.classList.add("buttons-container");
-    const submitBtn = document.createElement("button");
-    submitBtn.classList.add("create-project");
-    submitBtn.type = "submit";
-    submitBtn.textContent = "Create";
-    const cancelBtn = document.createElement("button");
-    cancelBtn.classList.add("cancel-project");
-    cancelBtn.textContent = "Cancel";
-    buttonsContainer.append(submitBtn, cancelBtn);
+    // Todo item description input
+    const todoItemDesc = createInput("todo-item-description", "text", "true", "todo-item-desc-error");
 
-    form.append(title, projectName, dueDate, buttonsContainer);
-    newProjectModal.append(form);
-    return newProjectModal;
+    // Todo item priority select
+    // probably use something else to make the select for priority
+
+    form.append(title, todoItemName, todoItemDueDate, todoItemDesc);
+
+    newTodoItemModal.append(form);
+    return newTodoItemModal;
 }
 
-const createTodoListElement = (todoList) => {
-    // create a todo list
+const createInput = (id, type, required, errorClass) => {
+    const inputContainer = document.createElement("div");
+    inputContainer.classList.add("input-container");
+
+    const inputLabel = document.createElement("label");
+    inputLabel.setAttribute("for", id);
+    inputLabel.textContent = "Name";
+
+    const input = document.createElement("input");
+    input.id = id;
+    input.type = type;
+    input.required = required;
+
+    const inputError = document.createElement("p");
+    inputError.classList.add("error", errorClass);
+
+    const spacer = document.createElement("span");
+    inputContainer.append(inputLabel, input, spacer, inputError);
+
+    return inputContainer;
+}
+
+const createTodoListSummaryElement = (todoList) => {
     const todoListContainer = document.createElement("div");
     todoListContainer.classList.add("todo-list");
 
@@ -139,4 +152,4 @@ const createTodoListElement = (todoList) => {
     return todoListContainer;
 }
 
-export { createTodoListElement, createNewTodoListModal, createNewProjectModal }
+export { createTodoListSummaryElement, createNewTodoListModal, createNewProjectModal, createTodoItemModal }

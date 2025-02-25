@@ -30,6 +30,10 @@ const cacheDomElements = () => {
     cacheDom.projectNameError = document.querySelector(".project-name-error");
     cacheDom.projectDateError = document.querySelector(".project-date-error");
     cacheDom.todoListNameError = document.querySelector(".todo-list-name-error");
+    cacheDom.todoItemNameError = document.querySelector(".todo-item-name-error");
+    cacheDom.todoItemDateError = document.querySelector(".todo-item-date-error");
+    cacheDom.todoItemDescError = document.querySelector(".todo-item-desc-error");
+    cacheDom.todoItemPriorityError = document.querySelector(".todo-item-priority-error");
 
     cacheDom.todoListsContainer = document.querySelector(".todo-lists-container");
     cacheDom.singleProjectContainer = document.querySelector(".single-project-container");
@@ -150,6 +154,11 @@ const createNewTodoItem = (e) => {
     const descIsValid = document.querySelector("#todo-item-description").checkValidity();
     const priorityIsValid = document.querySelector("#todo-item-priority").checkValidity();
     if (nameIsValid && dateIsValid && descIsValid && priorityIsValid) {
+        const dataset = document.querySelector(".new-todo-item").dataset;
+        const projectName = dataset.projectName;
+        const todoListName = dataset.todoListName;
+        const project = Dashboard.getProject(projectName);
+        const todoList = project.getTodoList(todoListName);
         const form = e.target.form;
         const name = form[0].value;
         const dueDate = form[1].value;
@@ -157,6 +166,7 @@ const createNewTodoItem = (e) => {
         const priority = form[3].value;
         const todoItem = new TodoItem(name, dueDate, description, priority);
         // add item to todoList
+        todoList.addTodo(todoItem);
     } else {
         cacheDom.todoItemNameError.textContent = nameIsValid ? "" : "This field is required";
         cacheDom.todoItemDateError.textContent = dateIsValid ? "" : "This field is required";

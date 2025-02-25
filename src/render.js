@@ -1,6 +1,6 @@
 import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList } from "./bindEvents";
 import { Dashboard } from "./classes";
-import { createTodoListElement, createNewProjectModal, createNewTodoListModal } from "./elements";
+import { createTodoListSummaryElement, createNewProjectModal, createNewTodoListModal, createTodoItemModal } from "./elements";
 
 const renderBody = () => {
     const body = document.querySelector("body");
@@ -13,17 +13,23 @@ const renderBody = () => {
     title.textContent = "Todo Projects";
     titleContainer.append(title);
 
+    // Create buttons for new projects and todo lists
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add("buttons-container");
     const newProjectBtn = document.createElement("button");
     newProjectBtn.classList.add("new-project");
     newProjectBtn.textContent = "New project";
-    const newProjectModal = createNewProjectModal();
     const newTodoListBtn = document.createElement("button");
     newTodoListBtn.classList.add("new-todo-list");
     newTodoListBtn.textContent = "New todo list";
+    buttonsContainer.append(newProjectBtn, newTodoListBtn);
+
+    // Create modals
+    const modalContainer = document.createElement("div");
+    const newProjectModal = createNewProjectModal();
     const newTodoListModal = createNewTodoListModal();
-    buttonsContainer.append(newProjectBtn, newProjectModal, newTodoListBtn, newTodoListModal);
+    const newTodoItemModal = createTodoItemModal();
+    modalContainer.append(newProjectModal, newTodoListModal, newTodoItemModal);
 
     const todoListsContainer = document.createElement("div");
     todoListsContainer.classList.add("todo-lists-container");
@@ -126,7 +132,7 @@ const renderTodoList = (project, todoList) => {
     }
 
     const addTodoBtn = document.createElement("button");
-    addTodoBtn.classList.add("create-todo-item");
+    addTodoBtn.classList.add("new-todo-item");
     addTodoBtn.setAttribute("data-project-name", project.name);
     addTodoBtn.setAttribute("data-todo-list-name", todoList.name);
     addTodoBtn.addEventListener("click", showNewTodoModal);
@@ -140,7 +146,7 @@ const renderAllTodoLists = () => {
     todoListsContainer.replaceChildren();
     for (const project of Dashboard.projects) {
         for (const todoList of project.todoLists) {
-            const element = createTodoListElement(todoList);
+            const element = createTodoListSummaryElement(todoList);
             todoListsContainer.append(element);
         }
     }
