@@ -1,3 +1,12 @@
+:root {
+    /* CSS HEX */
+    --seasalt: #f9f8f8ff;
+    --rich-black: #0d1b1eff;
+    --chestnut: #a44a3fff;
+    --cerulean: #437c90ff;
+    --kelly-green: #63c132ff;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -7,7 +16,8 @@ body {
     margin: 0;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: minmax(150px, 1fr) 6fr;
+    color: var(--rich-black);
 }
 
 a {
@@ -28,15 +38,24 @@ li {
     grid-template-rows: auto auto 1fr;
 }
 
+.content > div:first-child {
+    background-color: var(--seasalt);
+}
+
 .sidebar {
-    background-color: #eaeaea;
-    padding: 50px 0 0 5%;
+    background-color: var(--rich-black);
+    padding: 50px 7% 0;
+    color: var(--seasalt);
 }
 
 .projects-container .project {
     display: block;
     margin-bottom: 15px;
     font-size: 1.2rem;
+}
+
+.projects-container .project.selected {
+    font-weight: 700;
 }
 
 h1 {
@@ -46,6 +65,7 @@ h1 {
 
 h2 {
     font-size: 1.8rem;
+    text-align: center;
 }
 
 h3 {
@@ -54,6 +74,22 @@ h3 {
 
 .buttons-container {
     text-align: center;
+    background-color: var(--seasalt);
+}
+
+.content > .buttons-container button {
+    margin: 0 10px 10px;
+    background-color: var(--rich-black);
+    color: var(--seasalt);
+    padding: 10px 12px;
+    font-weight: 700;
+    border: 1px solid var(--rich-black);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.buttons-container button:active {
+    background-color: rgb(from var(--rich-black) r g b / 0.85);
 }
 
 .new-todo-list-modal,
@@ -74,25 +110,54 @@ h3 {
 p.error {
     margin: 0;
     text-align: left;
-    color: red;
+    color: var(--chestnut);
     font-size: 0.9rem;
 }
 
 .new-todo-list-modal button,
-.new-project-modal button {
+.new-project-modal button,
+.new-todo-item-modal button {
     margin: 5px;
 }
 
-.create-todo-list,
-.create-project {
-    background-color: green;
-    color: white;
+button.create-todo-list,
+button.create-project,
+button.create-todo-item,
+button.cancel-todo-list,
+button.cancel-project,
+button.cancel-todo-item {
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: var(--rich-black);
+    cursor: pointer;
 }
 
-.cancel-todo-list,
-.cancel-project {
-    background-color: red;
-    color: white;
+button.create-todo-list:active,
+button.create-project:active,
+button.create-todo-item:active {
+    background-color: rgb(from var(--kelly-green) r g b / 0.85);
+}
+
+button.cancel-todo-list:active,
+button.cancel-project:active,
+button.cancel-todo-item:active {
+    background-color: rgb(from var(--chestnut) r g b / 0.85);
+}
+
+button.create-todo-list,
+button.create-project,
+button.create-todo-item {
+    background-color: var(--kelly-green);
+    border: 1px solid var(--kelly-green);
+}
+
+button.cancel-todo-list,
+button.cancel-project,
+button.cancel-todo-item {
+    background-color: var(--chestnut);
+    border: 1px solid var(--chestnut);
 }
 
 .todo-lists-container {
@@ -122,8 +187,9 @@ p.error {
     margin-right: 10px;
 }
 
-.single-project-container {
-    background-color: #ffffff;
+.single-project-container,
+.single-todo-list-container {
+    background-color: var(--cerulean);
     text-align: center;
     padding: 5% 15%;
     display: flex;
@@ -132,23 +198,74 @@ p.error {
 
 .single-project-container .card,
 .single-todo-list-container .card {
-    background-color: #fefefe;
+    background-color: var(--seasalt);
     border: 1px solid #000000;
     border-radius: 10px;
-    width: clamp(200px, 65%, 600px);
-    padding: 0 12% 5%;
+    width: clamp(300px, 65%, 600px);
+    padding: 0 5% 5%;
     max-height: fit-content;
 }
 
-.single-project-container li {
+.single-project-container li,
+.single-todo-list-container li {
     text-align: left;
     padding: 5px 15px;
 }
 
-.single-todo-list-container {
-    background-color: darkorange;
+.single-todo-list-container li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "checkbox name"
+        ". date"
+        ". description";
+    border-top: 1px solid #eaeaea;
+}
+
+.single-todo-list-container li:last-of-type {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.single-todo-list-container li > input {
+    grid-area: checkbox;
+    margin-right: 10px;
+}
+
+.single-todo-list-container li > input:checked ~ p {
+    text-decoration: line-through;
+}
+
+.single-todo-list-container li p {
+    margin: 0;
+}
+
+.todo-item-name {
+    grid-area: name;
+    font-size: 1.3rem;
+}
+
+.todo-item-due-date {
+    grid-area: date;
+    font-size: 0.9rem;
+}
+
+.todo-item-description {
+    grid-area: description;
+    font-size: 0.9rem;
+}
+
+.new-todo-item {
+    margin-top: 8px;
 }
 
 .hide {
     display: none;
+}
+
+@media (max-width: 1200px) {
+    .single-project-container,
+    .single-todo-list-container {
+        padding: 5%;
+    }
 }

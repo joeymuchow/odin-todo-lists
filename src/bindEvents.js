@@ -157,7 +157,7 @@ const createNewTodoList = (e) => {
 
         closeNewTodoListModal(e);
 
-        renderAllTodoLists();
+        renderTodoList(project, todoList);
     } else {
         cacheDom.todoListNameError.textContent = "This field is required";
     }

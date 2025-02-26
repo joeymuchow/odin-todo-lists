@@ -116,10 +116,13 @@ const renderTodoList = (project, todoList) => {
         const li = document.createElement("li");
         const name = document.createElement("p");
         name.textContent = todo.name;
+        name.classList.add("todo-item-name");
         const dueDate = document.createElement("p");
-        dueDate.textContent = todo.dueDate;
+        dueDate.textContent = "Due date: " + todo.dueDate;
+        dueDate.classList.add("todo-item-due-date");
         const description = document.createElement("p");
         description.textContent = todo.description;
+        description.classList.add("todo-item-description");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = todo.complete;
@@ -164,6 +167,11 @@ const renderAllProjectsSidebar = () => {
         projectElement.textContent = project.name;
         projectElement.addEventListener("click", () => {
             renderProject(project);
+            // create a function that bolds the project when it is selected
+            // there is a selected css class for bolding
+            // need to remove the class from any projects if there is one
+            // also need to remove it when teh view changes to all todos
+            // maybe it should stay when you look at a todo list inside a project
         });
         projectsContainer.append(projectElement);
     }
