@@ -1,6 +1,7 @@
-import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal } from "./bindEvents";
+import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal, showNewTodoListModal } from "./bindEvents";
 import { Dashboard } from "./classes";
 import { createTodoListSummaryElement, createNewProjectModal, createNewTodoListModal, createTodoItemModal } from "./elements";
+import xmarkCircle from "../icons/xmark-circle.svg";
 
 const renderBody = () => {
     const body = document.querySelector("body");
@@ -60,8 +61,6 @@ const renderBody = () => {
 
     bindEvents();
 
-    // TODO maybe this event listener should just be in bind events
-    viewAllTodos.addEventListener("click", renderAllTodoLists);
     renderAllProjectsSidebar();
     renderAllTodoLists();
 }
@@ -93,7 +92,12 @@ const renderProject = (project) => {
         });
     }
 
-    card.append(projectName, projectDueDate, line, todoLists);
+    const addTodoListBtn = document.createElement("button");
+    addTodoListBtn.classList.add("new-todo-list");
+    addTodoListBtn.addEventListener("click", showNewTodoListModal);
+    addTodoListBtn.textContent = "Add todo list";
+
+    card.append(projectName, projectDueDate, line, todoLists, addTodoListBtn);
     container.append(card);
 }
 
@@ -112,25 +116,36 @@ const renderTodoList = (project, todoList) => {
     // list each todo item from the todo list
     const todos = document.createElement("ul");
 
-    for (const todo of todoList.todoList) {
+    for (let i = 0; i < todoList.todoList.length; i++) {
         const li = document.createElement("li");
         const name = document.createElement("p");
-        name.textContent = todo.name;
+        name.textContent = todoList.todoList[i].name;
         name.classList.add("todo-item-name");
         const dueDate = document.createElement("p");
-        dueDate.textContent = "Due date: " + todo.dueDate;
+        const deleteIcon = document.createElement("img");
+        deleteIcon.classList.add("todo-item-delete");
+        deleteIcon.src = xmarkCircle;
+        deleteIcon.addEventListener("click", () => {
+            todoList.deleteTodo(i);
+            renderTodoList(project, todoList);
+        });
+        dueDate.textContent = "Due date: " + todoList.todoList[i].dueDate;
         dueDate.classList.add("todo-item-due-date");
         const description = document.createElement("p");
-        description.textContent = todo.description;
+        description.textContent = todoList.todoList[i].description;
         description.classList.add("todo-item-description");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.checked = todo.complete;
+        checkbox.checked = todoList.todoList[i].complete;
         checkbox.addEventListener("change", () => {
-            todo.updateCompleteStatus();
+            todoList.todoList[i].updateCompleteStatus();
         });
 
-        li.append(checkbox, name, dueDate, description);
+        // TODO use date-fns for displaying the date in a different form? or for actually saving the date in the item or list?
+
+        // TODO add something to signify priority - bg color? icons?
+
+        li.append(checkbox, name, deleteIcon, dueDate, description);
         todos.append(li);
     }
 

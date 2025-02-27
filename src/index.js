@@ -7,3 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Dashboard.addProject(defaultProject);
     renderBody();
 });
+
+// TODO save projects to localStorage
+
+// TODO load projects from localStorage

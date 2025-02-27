@@ -77,8 +77,10 @@ h3 {
     background-color: var(--seasalt);
 }
 
-.content > .buttons-container button {
-    margin: 0 10px 10px;
+.new-project,
+.new-todo-item,
+.new-todo-list {
+    margin: 10px;
     background-color: var(--rich-black);
     color: var(--seasalt);
     padding: 10px 12px;
@@ -88,18 +90,21 @@ h3 {
     cursor: pointer;
 }
 
-.buttons-container button:active {
+.new-project:active,
+.new-todo-item:active,
+.new-todo-list:active {
     background-color: rgb(from var(--rich-black) r g b / 0.85);
 }
 
 .new-todo-list-modal,
 .new-project-modal,
 .new-todo-item-modal {
-    bottom: 40%;
+    bottom: 10%;
 }
 
 .new-todo-list-modal form > div.input-container,
-.new-project-modal form > div.input-container {
+.new-project-modal form > div.input-container,
+.new-todo-item-modal form > div.input-container {
     display: grid;
     grid-template-columns: 1fr 3fr;
     text-align: right;
@@ -161,7 +166,7 @@ button.cancel-todo-item {
 }
 
 .todo-lists-container {
-    background-color: slategray;
+    background-color: var(--cerulean);
     display: grid;
     grid-template-columns: repeat( auto-fill, minmax(250px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
@@ -170,8 +175,10 @@ button.cancel-todo-item {
 }
 
 .todo-list {
-    background-color: aqua;
+    background-color: var(--seasalt);
     padding: 10px;
+    border: 1px solid var(--rich-black);
+    border-radius: 8px;
 }
 
 .todo-list h2 {
@@ -202,7 +209,7 @@ button.cancel-todo-item {
     border: 1px solid #000000;
     border-radius: 10px;
     width: clamp(300px, 65%, 600px);
-    padding: 0 5% 5%;
+    padding: 0 5% 2%;
     max-height: fit-content;
 }
 
@@ -214,12 +221,12 @@ button.cancel-todo-item {
 
 .single-todo-list-container li {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     grid-template-rows: auto;
     grid-template-areas: 
-        "checkbox name"
-        ". date"
-        ". description";
+        "checkbox name ."
+        ". date deleteTodo"
+        ". description .";
     border-top: 1px solid #eaeaea;
 }
 
@@ -243,6 +250,11 @@ button.cancel-todo-item {
 .todo-item-name {
     grid-area: name;
     font-size: 1.3rem;
+}
+
+.todo-item-delete {
+    grid-area: deleteTodo;
+    cursor: pointer;
 }
 
 .todo-item-due-date {

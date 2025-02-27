@@ -4,6 +4,7 @@ import { renderAllTodoLists, renderAllProjectsSidebar, renderTodoListProjectSele
 const cacheDom = {};
 
 const cacheDomElements = () => {
+    cacheDom.viewAllTodos = document.querySelector(".view-all-todos");
     cacheDom.newProject = document.querySelector(".new-project");
     cacheDom.newTodoList = document.querySelector(".new-todo-list");
 
@@ -41,6 +42,8 @@ const cacheDomElements = () => {
 
 const bindEvents = () => {
     cacheDomElements();
+
+    cacheDom.viewAllTodos.addEventListener("click", renderAllTodoLists);
 
     cacheDom.newProject.addEventListener("click", showNewProjectModal);
     cacheDom.newTodoList.addEventListener("click", showNewTodoListModal);
@@ -215,4 +218,12 @@ const showSingleTodoList = () => {
     cacheDom.singleProjectContainer.classList.add("hide");
 }
 
-export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal };
+// TODO delete project button - default cannot be deleted, for now
+
+// TODO delete todo list
+
+// TODO delete todo item
+
+// TODO edit todo item or expand a todo item?
+
+export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal, showNewTodoListModal };

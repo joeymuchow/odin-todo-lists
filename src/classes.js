@@ -82,7 +82,7 @@ class TodoList {
         this.todoList.push(todoItem);
     }
 
-    deleteToDo(index) {
+    deleteTodo(index) {
         this.todoList.splice(index, 1);
     }
 }
