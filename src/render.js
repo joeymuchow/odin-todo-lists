@@ -81,15 +81,22 @@ const renderProject = (project) => {
     const line = document.createElement("hr");
     const todoLists = document.createElement("ul");
     
-    for (const todoList of project.todoLists) {
+    for (let i = 0; i < project.todoLists.length; i++) {
         const li = document.createElement("li");
         const link = document.createElement("a");
-        link.textContent = todoList.name;
-        li.append(link);
-        todoLists.append(li);
+        link.textContent = project.todoLists[i].name;
         link.addEventListener("click", () => {
-            renderTodoList(project, todoList);
+            renderTodoList(project, project.todoLists[i]);
         });
+        const deleteIcon = document.createElement("img");
+        deleteIcon.classList.add("todo-list-delete");
+        deleteIcon.src = xmarkCircle;
+        deleteIcon.addEventListener("click", () => {
+            project.deleteTodoList(i);
+            renderProject(project);
+        });
+        li.append(link, deleteIcon);
+        todoLists.append(li);
     }
 
     const addTodoListBtn = document.createElement("button");

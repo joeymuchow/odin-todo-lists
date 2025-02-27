@@ -219,6 +219,12 @@ button.cancel-todo-item {
     padding: 5px 15px;
 }
 
+.single-project-container li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .single-todo-list-container li {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -269,6 +275,10 @@ button.cancel-todo-item {
 
 .new-todo-item {
     margin-top: 8px;
+}
+
+.todo-list-delete {
+    cursor: pointer;
 }
 
 .hide {
