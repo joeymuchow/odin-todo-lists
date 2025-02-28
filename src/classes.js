@@ -12,7 +12,7 @@ class Dashboard {
     static getProject(name) {
         let result;
         for (const project of this.projects) {
-            if (project.name === name) {
+            if (project.name.toLowerCase() === name.toLowerCase()) {
                 result = project;
                 break;
             }
@@ -55,7 +55,7 @@ class Project {
     getTodoList(name) {
         let result;
         for (const todoList of this.todoLists) {
-            if (todoList.name === name) {
+            if (todoList.name.toLowerCase() === name.toLowerCase()) {
                 result = todoList;
                 break;
             }

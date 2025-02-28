@@ -128,12 +128,12 @@ const resetNewTodoItemModal = () => {
 
 const createNewProject = (e) => {
     e.preventDefault();
-    // TODO create check for if a project name already exists
+    const form = e.target.form;
     const nameIsValid = cacheDom.projectName.checkValidity();
+    const nameIsAvailable = checkProjectNameAvailability(form[0].value.trim());
     const dateIsValid = cacheDom.projectDueDate.checkValidity();
-    if (nameIsValid && dateIsValid) {
-        const form = e.target.form;
-        const project = new Project(form[0].value, form[1].value);
+    if (nameIsValid && dateIsValid && nameIsAvailable) {
+        const project = new Project(form[0].value.trim(), form[1].value);
 
         Dashboard.addProject(project);
 
@@ -141,28 +141,37 @@ const createNewProject = (e) => {
         renderAllProjectsSidebar();
         renderTodoListProjectSelect();
     } else {
-        cacheDom.projectNameError.textContent = nameIsValid ? "" : "This field is required";
+        if (!nameIsValid) {
+            cacheDom.projectNameError.textContent = "This field is required";
+        } else if (!nameIsAvailable) {
+            cacheDom.projectNameError.textContent = "Name is not available";
+        } else {
+            cacheDom.projectNameError.textContent = "";
+        }
         cacheDom.projectDateError.textContent = dateIsValid ? "" : "This field is required";
     }
 }
 
 const createNewTodoList = (e) => {
     e.preventDefault();
-    // TODO create check for if a todo list name already exists in the project
+    const form = e.target.form;
+    const projectName = form[1].value;
+    const project = Dashboard.getProject(projectName);
+    const nameIsAvailable = checkTodoListNameAvailability(project, form[0].value.trim());
     const nameIsValid = document.querySelector("#todo-list-name").checkValidity();
-    if (nameIsValid) {
-        const form = e.target.form;
-        const todoList = new TodoList(form[0].value);
-        const projectName = form[1].value;
-
-        const project = Dashboard.getProject(projectName);
+    if (nameIsValid && nameIsAvailable) {
+        const todoList = new TodoList(form[0].value.trim());
         project.addTodoList(todoList);
-
         closeNewTodoListModal(e);
-
         renderTodoList(project, todoList);
     } else {
-        cacheDom.todoListNameError.textContent = "This field is required";
+        if (!nameIsValid) {
+            cacheDom.todoListNameError.textContent = "This field is required";
+        } else if (!nameIsAvailable) {
+            cacheDom.todoListNameError.textContent = "Name is not available";
+        } else {
+            cacheDom.todoListNameError.textContent = "";
+        }
     }
 }
 
@@ -216,6 +225,14 @@ const showSingleTodoList = () => {
     cacheDom.singleTodoListContainer.classList.remove("hide");
     cacheDom.todoListsContainer.classList.add("hide");
     cacheDom.singleProjectContainer.classList.add("hide");
+}
+
+const checkProjectNameAvailability = (name) => {
+    return Dashboard.getProject(name) === undefined;
+}
+
+const checkTodoListNameAvailability = (project, name) => {
+    return project.getTodoList(name) === undefined;
 }
 
 // TODO delete project button - default cannot be deleted, for now
