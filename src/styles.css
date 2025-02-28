@@ -244,7 +244,7 @@ button.cancel-todo-item {
     border-bottom: 1px solid #eaeaea;
 }
 
-.single-todo-list-container li > input {
+.single-todo-list-container li > input[type="checkbox"] {
     grid-area: checkbox;
     margin-right: 10px;
 }

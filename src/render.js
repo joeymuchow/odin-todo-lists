@@ -130,9 +130,13 @@ const renderTodoList = (project, todoList) => {
         const name = document.createElement("p");
         name.textContent = todoList.todoList[i].name;
         name.classList.add("todo-item-name");
-        const dueDate = document.createElement("p");
-        dueDate.textContent = "Due date: " + todoList.todoList[i].dueDate;
+        const dueDate = document.createElement("input");
+        dueDate.type = "date";
+        dueDate.value = todoList.todoList[i].dueDate;
         dueDate.classList.add("todo-item-due-date", "hide");
+        dueDate.addEventListener("change", (e) => {
+            todoList.todoList[i].dueDate = e.target.value || todoList.todoList[i].dueDate;
+        });
         const deleteIcon = document.createElement("img");
         deleteIcon.classList.add("todo-item-delete", "hide");
         deleteIcon.src = xmarkCircle;
@@ -140,9 +144,13 @@ const renderTodoList = (project, todoList) => {
             todoList.deleteTodo(i);
             renderTodoList(project, todoList);
         });
-        const description = document.createElement("p");
-        description.textContent = todoList.todoList[i].description;
+        const description = document.createElement("input");
+        description.type = "text";
+        description.value = todoList.todoList[i].description;
         description.classList.add("todo-item-description", "hide");
+        description.addEventListener("change", (e) => {
+            todoList.todoList[i].description = e.target.value || todoList.todoList[i].description;
+        });
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = todoList.todoList[i].complete;

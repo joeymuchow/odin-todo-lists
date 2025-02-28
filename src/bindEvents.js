@@ -220,10 +220,4 @@ const showSingleTodoList = () => {
 
 // TODO delete project button - default cannot be deleted, for now
 
-// TODO delete todo list
-
-// TODO delete todo item
-
-// TODO edit todo item or expand a todo item?
-
 export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal, showNewTodoListModal };
