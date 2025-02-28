@@ -2,6 +2,8 @@ import { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNe
 import { Dashboard } from "./classes";
 import { createTodoListSummaryElement, createNewProjectModal, createNewTodoListModal, createTodoItemModal } from "./elements";
 import xmarkCircle from "../icons/xmark-circle.svg";
+import navArrowUp from "../icons/nav-arrow-up.svg";
+import navArrowDown from "../icons/nav-arrow-down.svg";
 
 const renderBody = () => {
     const body = document.querySelector("body");
@@ -129,30 +131,39 @@ const renderTodoList = (project, todoList) => {
         name.textContent = todoList.todoList[i].name;
         name.classList.add("todo-item-name");
         const dueDate = document.createElement("p");
+        dueDate.textContent = "Due date: " + todoList.todoList[i].dueDate;
+        dueDate.classList.add("todo-item-due-date", "hide");
         const deleteIcon = document.createElement("img");
-        deleteIcon.classList.add("todo-item-delete");
+        deleteIcon.classList.add("todo-item-delete", "hide");
         deleteIcon.src = xmarkCircle;
         deleteIcon.addEventListener("click", () => {
             todoList.deleteTodo(i);
             renderTodoList(project, todoList);
         });
-        dueDate.textContent = "Due date: " + todoList.todoList[i].dueDate;
-        dueDate.classList.add("todo-item-due-date");
         const description = document.createElement("p");
         description.textContent = todoList.todoList[i].description;
-        description.classList.add("todo-item-description");
+        description.classList.add("todo-item-description", "hide");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = todoList.todoList[i].complete;
         checkbox.addEventListener("change", () => {
             todoList.todoList[i].updateCompleteStatus();
         });
+        const expandIcon = document.createElement("img");
+        expandIcon.classList.add("todo-item-expand");
+        expandIcon.src = navArrowDown;
+        expandIcon.addEventListener("click", () => {
+            dueDate.classList.toggle("hide");
+            description.classList.toggle("hide");
+            deleteIcon.classList.toggle("hide");
+            expandIcon.src = description.classList.contains("hide") ? navArrowDown : navArrowUp;
+        });
 
         // TODO use date-fns for displaying the date in a different form? or for actually saving the date in the item or list?
 
         // TODO add something to signify priority - bg color? icons?
 
-        li.append(checkbox, name, deleteIcon, dueDate, description);
+        li.append(checkbox, name, expandIcon, deleteIcon, dueDate, description);
         todos.append(li);
     }
 
@@ -173,7 +184,7 @@ const renderAllTodoLists = () => {
     todoListsContainer.replaceChildren();
     for (const project of Dashboard.projects) {
         for (const todoList of project.todoLists) {
-            const element = createTodoListSummaryElement(todoList);
+            const element = createTodoListSummaryElement(project, todoList);
             todoListsContainer.append(element);
         }
     }

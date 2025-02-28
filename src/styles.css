@@ -167,9 +167,11 @@ button.cancel-todo-item {
 
 .todo-lists-container {
     background-color: var(--cerulean);
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat( auto-fill, minmax(250px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(250px, 1fr)); */
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     padding: 15px;
 }
@@ -179,6 +181,7 @@ button.cancel-todo-item {
     padding: 10px;
     border: 1px solid var(--rich-black);
     border-radius: 8px;
+    flex: 1 1 250px;
 }
 
 .todo-list h2 {
@@ -230,10 +233,11 @@ button.cancel-todo-item {
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto;
     grid-template-areas: 
-        "checkbox name ."
-        ". date deleteTodo"
-        ". description .";
+        "checkbox name expandTodo"
+        ". date ."
+        ". description deleteTodo";
     border-top: 1px solid #eaeaea;
+    align-items: center;
 }
 
 .single-todo-list-container li:last-of-type {
@@ -258,6 +262,11 @@ button.cancel-todo-item {
     font-size: 1.3rem;
 }
 
+.todo-item-expand {
+    grid-area: expandTodo;
+    cursor: pointer;
+}
+
 .todo-item-delete {
     grid-area: deleteTodo;
     cursor: pointer;
@@ -279,6 +288,22 @@ button.cancel-todo-item {
 
 .todo-list-delete {
     cursor: pointer;
+}
+
+.high-priority {
+    color: var(--chestnut);
+}
+
+.medium-priority {
+    color: var(--rich-black);
+}
+
+.low-priority {
+    color: var(--cerulean);
+}
+
+.done {
+    text-decoration: line-through;
 }
 
 .hide {

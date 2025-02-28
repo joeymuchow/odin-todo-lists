@@ -1,4 +1,5 @@
 import { Dashboard } from "./classes";
+import { renderTodoList } from "./render";
 
 const createNewProjectModal = () => {
     const newProjectModal = document.createElement("dialog");
@@ -129,27 +130,38 @@ const createModalButtons = (createClass, cancelClass) => {
     return buttonsContainer;
 }
 
-const createTodoListSummaryElement = (todoList) => {
+const createTodoListSummaryElement = (project, todoList) => {
     const todoListContainer = document.createElement("div");
     todoListContainer.classList.add("todo-list");
 
     const name = document.createElement("h2");
-    name.textContent = todoList.name;
-
-    // create button for adding a todo list item
-    // add event listener to handle that
+    const nameLink = document.createElement("a");
+    nameLink.textContent = todoList.name;
+    nameLink.addEventListener("click", () => {
+        renderTodoList(project, todoList);
+    });
+    name.append(nameLink);
 
     const todos = document.createElement("ul");
     for (const todoItem of todoList.todoList) {
         const li = document.createElement("li");
 
+        const hr = document.createElement("hr");
+
         const name = document.createElement("p");
+        if (todoItem.priority === "High") {
+            name.classList.add("high-priority");
+        } else if (todoItem.priority === "Medium") {
+            name.classList.add("medium-priority");
+        } else {
+            name.classList.add("low-priority");
+        }
+        if (todoItem.complete) {
+            name.classList.add("done");
+        }
         name.textContent = todoItem.name;
 
-        const desc = document.createElement("p");
-        desc.textContent = todoItem.description;
-
-        li.append(name, desc);
+        li.append(hr, name);
         todos.append(li);
     }
 
