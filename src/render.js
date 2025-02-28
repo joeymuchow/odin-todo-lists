@@ -130,6 +130,13 @@ const renderTodoList = (project, todoList) => {
         const name = document.createElement("p");
         name.textContent = todoList.todoList[i].name;
         name.classList.add("todo-item-name");
+        if (todoList.todoList[i].priority === "High") {
+            name.classList.add("high-priority");
+        } else if (todoList.todoList[i].priority === "Medium") {
+            name.classList.add("medium-priority");
+        } else {
+            name.classList.add("low-priority");
+        }
         const dueDate = document.createElement("input");
         dueDate.type = "date";
         dueDate.value = todoList.todoList[i].dueDate;
@@ -167,10 +174,6 @@ const renderTodoList = (project, todoList) => {
             expandIcon.src = description.classList.contains("hide") ? navArrowDown : navArrowUp;
         });
 
-        // TODO use date-fns for displaying the date in a different form? or for actually saving the date in the item or list?
-
-        // TODO add something to signify priority - bg color? icons?
-
         li.append(checkbox, name, expandIcon, deleteIcon, dueDate, description);
         todos.append(li);
     }
@@ -196,6 +199,9 @@ const renderAllTodoLists = () => {
             todoListsContainer.append(element);
         }
     }
+    if (document.querySelector(".selected")) {
+        document.querySelector(".selected").classList.remove("selected");
+    }
     showAllTodos();
 }
 
@@ -206,13 +212,12 @@ const renderAllProjectsSidebar = () => {
         const projectElement = document.createElement("a");
         projectElement.classList.add("project");
         projectElement.textContent = project.name;
-        projectElement.addEventListener("click", () => {
+        projectElement.addEventListener("click", (e) => {
             renderProject(project);
-            // create a function that bolds the project when it is selected
-            // there is a selected css class for bolding
-            // need to remove the class from any projects if there is one
-            // also need to remove it when teh view changes to all todos
-            // maybe it should stay when you look at a todo list inside a project
+            if (document.querySelector(".selected")) {
+                document.querySelector(".selected").classList.remove("selected");
+            }
+            e.target.classList.add("selected");
         });
         projectsContainer.append(projectElement);
     }
