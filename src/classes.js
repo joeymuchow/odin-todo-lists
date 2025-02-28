@@ -1,12 +1,16 @@
+import { storageAvailable } from "./index";
+
 class Dashboard {
     static projects = [];
 
     static addProject(project) {
         this.projects.push(project);
+        this.saveDashboard();
     }
 
     static deleteProject(index) {
         this.projects.splice(index, 1);
+        this.saveDashboard();
     }
 
     static getProject(name) {
@@ -18,6 +22,12 @@ class Dashboard {
             }
         }
         return result;
+    }
+
+    static saveDashboard() {
+        if (storageAvailable("localStorage")) {
+            localStorage.setItem("dashboard-projects", JSON.stringify(Dashboard.projects));
+        }
     }
 }
 
@@ -46,10 +56,12 @@ class Project {
 
     addTodoList(todoList) {
         this.todoLists.push(todoList);
+        Dashboard.saveDashboard();
     }
 
     deleteTodoList(index) {
         this.todoLists.splice(index, 1);
+        Dashboard.saveDashboard();
     }
 
     getTodoList(name) {
@@ -61,6 +73,14 @@ class Project {
             }
         }
         return result;
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            dueDate: this.dueDate,
+            todoLists: this.todoLists
+        }
     }
 }
 
@@ -80,10 +100,19 @@ class TodoList {
 
     addTodo(todoItem) {
         this.todoList.push(todoItem);
+        Dashboard.saveDashboard();
     }
 
     deleteTodo(index) {
         this.todoList.splice(index, 1);
+        Dashboard.saveDashboard();
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            todoList: this.todoList
+        }
     }
 }
 
@@ -134,6 +163,17 @@ class TodoItem {
 
     updateCompleteStatus() {
         this._complete = !this._complete;
+        Dashboard.saveDashboard();
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            dueDate: this.dueDate,
+            description: this.description,
+            priority: this.priority,
+            complete: this.complete
+        }
     }
 }
 

@@ -143,6 +143,7 @@ const renderTodoList = (project, todoList) => {
         dueDate.classList.add("todo-item-due-date", "hide");
         dueDate.addEventListener("change", (e) => {
             todoList.todoList[i].dueDate = e.target.value || todoList.todoList[i].dueDate;
+            Dashboard.saveDashboard();
         });
         const deleteIcon = document.createElement("img");
         deleteIcon.classList.add("todo-item-delete", "hide");
@@ -157,6 +158,7 @@ const renderTodoList = (project, todoList) => {
         description.classList.add("todo-item-description", "hide");
         description.addEventListener("change", (e) => {
             todoList.todoList[i].description = e.target.value || todoList.todoList[i].description;
+            Dashboard.saveDashboard();
         });
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
