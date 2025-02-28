@@ -89,6 +89,10 @@ const resetNewProjectModal = () => {
 }
 
 const showNewTodoListModal = () => {
+    const selected = document.querySelector(".selected");
+    if (selected) {
+        document.querySelector("#project-select").value = selected.textContent;
+    }
     cacheDom.newTodoListModal.showModal();
 }
 
@@ -234,7 +238,5 @@ const checkProjectNameAvailability = (name) => {
 const checkTodoListNameAvailability = (project, name) => {
     return project.getTodoList(name) === undefined;
 }
-
-// TODO delete project button - default cannot be deleted, for now
 
 export { bindEvents, showAllTodos, showSingleProject, showSingleTodoList, showNewTodoItemModal, showNewTodoListModal };

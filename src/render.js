@@ -208,18 +208,38 @@ const renderAllTodoLists = () => {
 const renderAllProjectsSidebar = () => {
     const projectsContainer = document.querySelector(".projects-container");
     projectsContainer.replaceChildren();
-    for (const project of Dashboard.projects) {
+    for (let i = 0; i < Dashboard.projects.length; i++) {
+        const div = document.createElement("div");
         const projectElement = document.createElement("a");
         projectElement.classList.add("project");
-        projectElement.textContent = project.name;
+        projectElement.textContent = Dashboard.projects[i].name;
         projectElement.addEventListener("click", (e) => {
-            renderProject(project);
+            renderProject(Dashboard.projects[i]);
             if (document.querySelector(".selected")) {
                 document.querySelector(".selected").classList.remove("selected");
             }
             e.target.classList.add("selected");
         });
-        projectsContainer.append(projectElement);
+        div.append(projectElement);
+        // Default is the first project and cannot be removed so no icon will be shown
+        if (i !== 0) {
+            const deleteProjectIcon = document.createElement("img");
+            deleteProjectIcon.src = xmarkCircle;
+            deleteProjectIcon.addEventListener("click", () => {
+                const selected = document.querySelector(".selected");
+                const deletedSelectedProject = selected && Dashboard.projects[i].name === selected.textContent;
+                const allTodosView = !document.querySelector(".todo-lists-container").classList.contains("hide");
+
+                Dashboard.deleteProject(i);
+                renderAllProjectsSidebar();
+                renderTodoListProjectSelect();
+                if (deletedSelectedProject || allTodosView) {
+                    renderAllTodoLists();
+                }
+            });
+            div.append(deleteProjectIcon);
+        }
+        projectsContainer.append(div);
     }
 }
 
